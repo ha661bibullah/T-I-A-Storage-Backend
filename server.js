@@ -14,46 +14,7 @@ app.use(express.json());
 
 const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
-// Backend API route for the admin reset functionality
-// This needs to be added to your backend server code
 
-// Add this route to your backend server (Node.js/Express example)
-/**
- * Route to reset the database (delete all users)
- * 
- * @route POST /admin/reset-database
- * @access Private (Admin Only)
- */
-app.post('/admin/reset-database', async (req, res) => {
-  try {
-      const { adminKey } = req.body;
-      
-      // Verify admin key
-      if (!adminKey || adminKey !== process.env.ADMIN_SECRET_KEY) {
-          return res.status(401).json({
-              success: false,
-              message: 'অননুমোদিত অ্যাক্সেস। এডমিন অনুমতি নেই।'
-          });
-      }
-      
-      // Delete all users from the database
-      await User.deleteMany({});
-      
-      // Optionally, delete any related collections like sessions, profiles, etc.
-      // For example: await Session.deleteMany({});
-      
-      return res.status(200).json({
-          success: true,
-          message: 'সমস্ত ইউজার ডাটা সফলভাবে মুছে ফেলা হয়েছে।'
-      });
-  } catch (error) {
-      console.error('Database reset error:', error);
-      return res.status(500).json({
-          success: false,
-          message: 'সার্ভার ত্রুটি। ডাটাবেস রিসেট করতে ব্যর্থ হয়েছে।'
-      });
-  }
-});
 // In-memory OTP storage (for demo purposes - in production, use database)
 const otpStore = {};
 
